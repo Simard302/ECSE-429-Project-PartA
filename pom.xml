@@ -22,13 +22,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- HttpClient dependency for API requests -->
-        <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
-            <version>5.1</version>
-        </dependency>
-
         <!-- Making rest requests -->
         <dependency>
             <groupId>io.rest-assured</groupId>

@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import dto.TodoRequestDTO;
+import dto.TodoRequestInvalidBDTO;
 import dto.TodoResponseDTO;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
@@ -28,6 +29,30 @@ public class TestCreateInstances extends TestBase {
         assertEquals(todoRequestDTO.getDescription(), todoResponseDTO.getDescription());
 
         this.verifyNoSideEffects(3);
+    }
+
+    @Test
+    public void testCreateInstanceNoTitle() {
+        TodoRequestDTO todoRequestDTO = new TodoRequestDTO(null, false, "");
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(todoRequestDTO)
+                .post("/todos");
+
+        assertEquals(400, response.statusCode());
+    }
+
+    @Test
+    public void testCreateInstanceInvalidDoneStatus() {
+        TodoRequestInvalidBDTO todoRequestDTO = new TodoRequestInvalidBDTO(null, "false", "");
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(todoRequestDTO)
+                .post("/todos");
+
+        assertEquals(400, response.statusCode());
     }
 
     @Test

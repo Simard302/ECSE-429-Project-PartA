@@ -7,17 +7,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "todo")
-public class TodoRequestInvalidDTO {
+public class TodoRequestInvalidADTO {
 
     private boolean[] title;
-    private String doneStatus;
+    private boolean doneStatus;
     private boolean[] description;
 
-    public TodoRequestInvalidDTO() {
+    public TodoRequestInvalidADTO() {
 
     }
 
-    public TodoRequestInvalidDTO(boolean[] title, String doneStatus, boolean[] description) {
+    public TodoRequestInvalidADTO(boolean[] title, boolean doneStatus, boolean[] description) {
         this.title = title;
         this.doneStatus = doneStatus;
         this.description = description;
@@ -33,11 +33,11 @@ public class TodoRequestInvalidDTO {
     }
 
     @XmlElement
-    public String getDoneStatus() {
+    public boolean getDoneStatus() {
         return doneStatus;
     }
 
-    public void setDoneStatus(String doneStatus) {
+    public void setDoneStatus(boolean doneStatus) {
         this.doneStatus = doneStatus;
     }
 

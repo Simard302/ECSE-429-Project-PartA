@@ -3,7 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import dto.TodoRequestDTO;
-import dto.TodoRequestInvalidDTO;
+import dto.TodoRequestInvalidBDTO;
 import dto.TodoResponseDTO;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
@@ -43,6 +43,18 @@ public class TestUpdateInstances extends TestBase {
         assertEquals(todoRequestDTO.getDescription(), todo.getDescription());
 
         this.verifyNoSideEffects(2);
+    }
+
+    @Test
+    public void testUpdateInstancePutInvalidDatatype() {
+        TodoRequestInvalidBDTO todoRequestDTO = new TodoRequestInvalidBDTO("title1", "true", null);
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(todoRequestDTO)
+                .post("/todos/1");
+
+        assertEquals(400, response.statusCode());
     }
 
     @Test
@@ -102,7 +114,7 @@ public class TestUpdateInstances extends TestBase {
 
     @Test
     public void testUpdateInstancePostInvalidDatatype() {
-        TodoRequestInvalidDTO todoRequestDTO = new TodoRequestInvalidDTO(null, "true", null);
+        TodoRequestInvalidBDTO todoRequestDTO = new TodoRequestInvalidBDTO(null, "true", null);
 
         Response response = given()
                 .contentType(ContentType.JSON)
