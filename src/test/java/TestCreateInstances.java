@@ -2,6 +2,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+import dto.TodoRequestDTO;
+import dto.TodoResponseDTO;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -24,6 +26,8 @@ public class TestCreateInstances extends TestBase {
         assertEquals(todoRequestDTO.getTitle(), todoResponseDTO.getTitle());
         assertEquals(todoRequestDTO.getDoneStatus() ? "true" : "false", todoResponseDTO.getDoneStatus());
         assertEquals(todoRequestDTO.getDescription(), todoResponseDTO.getDescription());
+
+        this.verifyNoSideEffects(3);
     }
 
     @Test
@@ -56,5 +60,7 @@ public class TestCreateInstances extends TestBase {
         assertEquals(todoRequestDTO2.getTitle(), todoResponseDTO2.getTitle());
         assertEquals(todoRequestDTO2.getDoneStatus() ? "true" : "false", todoResponseDTO2.getDoneStatus());
         assertEquals(todoRequestDTO2.getDescription(), todoResponseDTO2.getDescription());
+
+        this.verifyNoSideEffects(4);
     }
 }

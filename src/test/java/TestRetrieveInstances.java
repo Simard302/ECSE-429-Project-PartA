@@ -2,6 +2,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+import dto.TodoResponseDTO;
 import static io.restassured.RestAssured.given;
 import io.restassured.response.Response;
 

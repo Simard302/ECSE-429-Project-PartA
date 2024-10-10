@@ -8,11 +8,14 @@ import javax.xml.bind.Unmarshaller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+import dto.TodoRequestDTO;
+import dto.TodoResponseDTO;
+import dto.TodoResponseListDTO;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-public class TestXMLEncoding extends TestBase {
+public class TestEncoding extends TestBase {
 
     @Test
     public void testCreateInstanceFromXMLEncoding() throws JAXBException {
@@ -36,6 +39,8 @@ public class TestXMLEncoding extends TestBase {
         assertEquals(todoRequestDTO.getTitle(), todo.getTitle());
         assertEquals(todoRequestDTO.getDoneStatus() ? "true" : "false", todo.getDoneStatus());
         assertEquals(todoRequestDTO.getDescription(), todo.getDescription());
+
+        this.verifyNoSideEffects(3);
     }
 
     @Test
@@ -56,5 +61,33 @@ public class TestXMLEncoding extends TestBase {
         TodoResponseListDTO todos = (TodoResponseListDTO) Unmarshaller.unmarshal(reader);
 
         assertEquals(2, todos.getTodos().size());
+    }
+
+    @Test
+    public void testCreateInstanceFromMalformedXMLEncoding() {
+        // Missing closing tag
+        String malformedXML = "<todo><title>title1</title><doneStatus>false</doneStatus><description>description1</description>";
+
+        Response response = given()
+                .contentType(ContentType.XML)
+                .accept(ContentType.XML)
+                .body(malformedXML)
+                .post("/todos");
+
+        assertEquals(400, response.statusCode());
+    }
+    
+    @Test
+    public void testCreateInstanceFromMalformedJSONEncoding() {
+        // Missing closing bracket
+        String malformedJSON = "{\"title\":\"title1\",\"doneStatus\":false,\"description\":\"description1\"";
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(malformedJSON)
+                .post("/todos");
+
+        assertEquals(400, response.statusCode());
     }
 }

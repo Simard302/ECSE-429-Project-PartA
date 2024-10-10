@@ -1,3 +1,4 @@
+package dto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -6,20 +7,31 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @XmlRootElement(name = "todo")
-public class TodoRequestDTO {
+public class TodoResponseDTO {
 
+    private String id;
     private String title;
-    private boolean doneStatus;
+    private String doneStatus;
     private String description;
 
-    public TodoRequestDTO() {
+    public TodoResponseDTO() {
 
     }
 
-    public TodoRequestDTO(String title, boolean doneStatus, String description) {
+    public TodoResponseDTO(String id, String title, String doneStatus, String description) {
+        this.id = id;
         this.title = title;
         this.doneStatus = doneStatus;
         this.description = description;
+    }
+
+    @XmlElement
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @XmlElement
@@ -32,11 +44,11 @@ public class TodoRequestDTO {
     }
 
     @XmlElement
-    public boolean getDoneStatus() {
+    public String getDoneStatus() {
         return doneStatus;
     }
 
-    public void setDoneStatus(boolean doneStatus) {
+    public void setDoneStatus(String doneStatus) {
         this.doneStatus = doneStatus;
     }
 

@@ -2,6 +2,9 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
+import dto.TodoRequestDTO;
+import dto.TodoRequestInvalidDTO;
+import dto.TodoResponseDTO;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -18,6 +21,8 @@ public class TestUpdateInstances extends TestBase {
                 .put("/todos/1");
 
         assertEquals(400, response.statusCode());
+
+        this.verifyNoSideEffects(2);
     }
 
     @Test
@@ -36,6 +41,8 @@ public class TestUpdateInstances extends TestBase {
         assertEquals(todoRequestDTO.getTitle(), todo.getTitle());
         assertEquals(todoRequestDTO.getDoneStatus() ? "true" : "false", todo.getDoneStatus());
         assertEquals(todoRequestDTO.getDescription(), todo.getDescription());
+
+        this.verifyNoSideEffects(2);
     }
 
     @Test
@@ -48,6 +55,8 @@ public class TestUpdateInstances extends TestBase {
                 .put("/todos/3");
 
         assertEquals(404, response.statusCode());
+
+        this.verifyNoSideEffects(2);
     }
 
     @Test
@@ -67,6 +76,8 @@ public class TestUpdateInstances extends TestBase {
 
         assertEquals(todoRequestDTO.getDoneStatus() ? "true" : "false", todo.getDoneStatus());
         assertEquals(todoRequestDTO.getDescription(), todo.getDescription());
+
+        this.verifyNoSideEffects(2);
     }
 
     @Test
@@ -85,6 +96,20 @@ public class TestUpdateInstances extends TestBase {
         assertEquals(todoRequestDTO.getTitle(), todo.getTitle());
         assertEquals(todoRequestDTO.getDoneStatus() ? "true" : "false", todo.getDoneStatus());
         assertEquals(todoRequestDTO.getDescription(), todo.getDescription());
+
+        this.verifyNoSideEffects(2);
+    }
+
+    @Test
+    public void testUpdateInstancePostInvalidDatatype() {
+        TodoRequestInvalidDTO todoRequestDTO = new TodoRequestInvalidDTO(null, "true", null);
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(todoRequestDTO)
+                .post("/todos/1");
+
+        assertEquals(400, response.statusCode());
     }
 
     @Test
@@ -97,5 +122,7 @@ public class TestUpdateInstances extends TestBase {
                 .post("/todos/3");
 
         assertEquals(404, response.statusCode());
+
+        this.verifyNoSideEffects(2);
     }
 }
